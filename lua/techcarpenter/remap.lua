@@ -50,7 +50,6 @@ function InsertAtCursor(str)
   local line = vim.api.nvim_get_current_line()
   local nline = line:sub(0, pos) .. str .. line:sub(pos + 1)
   vim.api.nvim_set_current_line(nline)
-  -- vim.api.nvim_replace_termcodes(str:len() .. 'l')
   vim.api.nvim_feedkeys(str:len() .. 'l', 'n', true)
 end
 
@@ -101,7 +100,7 @@ function DailyNote()
     "  - journal",
     "---",
     "",
-    "#  " .. dayOfWeek .. ' - ' .. os.date('%m.%d.%Y'),
+    "# " .. dayOfWeek .. ' - ' .. os.date('%m.%d.%Y'),
   }
 
   local line = vim.fn.line(0)
