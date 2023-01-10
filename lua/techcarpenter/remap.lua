@@ -1,4 +1,5 @@
--- [[ Basic Keymaps ]]
+require('techcarpenter.utils')
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
@@ -43,87 +44,8 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'next [D]iagnostic'
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
----Insert single line string at cursor location
----@param str string
-function InsertAtCursor(str)
-  local pos = vim.api.nvim_win_get_cursor(0)[2]
-  local line = vim.api.nvim_get_current_line()
-  local nline = line:sub(0, pos) .. str .. line:sub(pos + 1)
-  vim.api.nvim_set_current_line(nline)
-  vim.api.nvim_feedkeys(str:len() .. 'l', 'n', true)
-end
+vim.keymap.set('i', '<C-H>', '<ESC>lcb>') --<C-H> maps to backspace in the terminal
 
----Inserts formatted date at cursor location
-function Date()
-  local date = os.date('%m.%d.%y')
-  InsertAtCursor(tostring(date))
-end
-
-vim.keymap.set('n', '<leader>dd', Date, { desc = 'Insert Date' })
-
----Create slug of a string
----@param str string
----@return string
-function Slugify(str)
-  local allowedChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-'
-  local tmpSub = str:lower()
-  tmpSub = tmpSub:gsub('%s+', '-')
-  tmpSub = tmpSub:gsub('%%', '')
-
-  local sub = ''
-  for value in tmpSub:gmatch(".") do
-    if allowedChars:find(value) then
-      sub = sub .. value
-    end
-  end
-  sub = sub:gsub('%-+', '-')
-  return sub
-end
-
-function DailyNote()
-  local journalDir = 'C:/GitRepos/lftm/personal/journal/'
-  local dayOfWeek = os.date('%A')
-  local fileDate = os.date('%Y%m%d')
-  local fileName = fileDate .. '.md'
-  local filePath = journalDir .. fileName
-
-  -- Check if file exists in file system
-  if vim.fn.globpath(journalDir, fileName) ~= '' then
-    vim.cmd(':edit ' .. filePath)
-    return
-  end
-
-  vim.cmd(':enew')
-  local template = {
-    "---",
-    "tags:",
-    "  - journal",
-    "---",
-    "",
-    "# " .. dayOfWeek .. ' - ' .. os.date('%m.%d.%Y'),
-  }
-
-  local line = vim.fn.line(0)
-  vim.fn.append(line, template)
-
-  vim.cmd(':file ' .. filePath)
-  vim.cmd(':w')
-  vim.cmd(':setlocal filetype=markdown')
-  vim.api.nvim_feedkeys('Go', 'n', true)
-end
-
-vim.keymap.set('n', '<leader>dn', DailyNote, { desc = 'Create daily note' })
-
-function JournalNote()
-  local journalDir = 'C:/GitRepos/lftm/personal/notes/'
-  local fileDate = os.date('%Y%m%d%H%M%S')
-  local title = vim.fn.input({ prompt = 'File name: ', cancelreturn = '' })
-  title = Slugify(title)
-
-  if title == '' then return end
-
-  vim.cmd(':enew')
-  vim.cmd(':file ' .. journalDir .. fileDate .. title .. '.md')
-end
-
-vim.keymap.set('n', '<leader>dj', JournalNote, { desc = 'Create journal note' })
+vim.keymap.set('n', '<leader>kd', Utils.insertDate, { desc = 'Insert Date' })
+vim.keymap.set('n', '<leader>kn', Utils.openDailyNote, { desc = 'Create daily note' })
+vim.keymap.set('n', '<leader>kj', Utils.openJournalNote, { desc = 'Create journal note' })
