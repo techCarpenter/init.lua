@@ -51,23 +51,7 @@ require('packer').startup(function(use)
   use 'tpope/vim-rhubarb'
   use 'lewis6991/gitsigns.nvim'
 
-  use {
-    'gaoDean/autolist.nvim',
-    ft = { 'markdown', 'text', 'latex' },
-    config = function()
-      local autolist = require('autolist')
-      autolist.setup {}
-      autolist.create_mapping_hook('i', '<CR>', autolist.new)
-      autolist.create_mapping_hook('i', '<TAB>', autolist.indent)
-      autolist.create_mapping_hook('i', '<S-TAB>', autolist.indent)
-      autolist.create_mapping_hook('n', 'dd', autolist.force_recalculate)
-      autolist.create_mapping_hook('n', 'o', autolist.new)
-      autolist.create_mapping_hook('n', 'O', autolist.new_before)
-      autolist.create_mapping_hook('n', '>>', autolist.indent)
-      autolist.create_mapping_hook('n', '<<', autolist.indent)
-      autolist.create_mapping_hook('n', '<leader>x', autolist.invert_entry)
-    end
-  }
+  use 'gaoDean/autolist.nvim'
   use 'navarasu/onedark.nvim' -- Theme inspired by Atom
   use 'nvim-lualine/lualine.nvim' -- Fancier statusline
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines

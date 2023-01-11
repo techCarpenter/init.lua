@@ -90,11 +90,8 @@ _G.packer_plugins = {
     url = "https://github.com/Glench/Vim-Jinja2-Syntax"
   },
   ["autolist.nvim"] = {
-    config = { "\27LJ\2\nå\2\0\0\6\0\20\00046\0\0\0'\2\1\0B\0\2\0029\1\2\0004\3\0\0B\1\2\0019\1\3\0'\3\4\0'\4\5\0009\5\6\0B\1\4\0019\1\3\0'\3\4\0'\4\a\0009\5\b\0B\1\4\0019\1\3\0'\3\4\0'\4\t\0009\5\b\0B\1\4\0019\1\3\0'\3\n\0'\4\v\0009\5\f\0B\1\4\0019\1\3\0'\3\n\0'\4\r\0009\5\6\0B\1\4\0019\1\3\0'\3\n\0'\4\14\0009\5\15\0B\1\4\0019\1\3\0'\3\n\0'\4\16\0009\5\b\0B\1\4\0019\1\3\0'\3\n\0'\4\17\0009\5\b\0B\1\4\0019\1\3\0'\3\n\0'\4\18\0009\5\19\0B\1\4\1K\0\1\0\17invert_entry\14<leader>x\a<<\a>>\15new_before\6O\6o\22force_recalculate\add\6n\f<S-TAB>\vindent\n<TAB>\bnew\t<CR>\6i\24create_mapping_hook\nsetup\rautolist\frequire\0" },
-    loaded = false,
-    needs_bufread = false,
-    only_cond = false,
-    path = "C:\\Users\\bridevries\\AppData\\Local\\nvim-data\\site\\pack\\packer\\opt\\autolist.nvim",
+    loaded = true,
+    path = "C:\\Users\\bridevries\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\autolist.nvim",
     url = "https://github.com/gaoDean/autolist.nvim"
   },
   ["cmp-buffer"] = {
@@ -239,15 +236,6 @@ time([[Sequenced loading]], true)
 vim.cmd [[ packadd nvim-treesitter ]]
 vim.cmd [[ packadd nvim-treesitter-textobjects ]]
 time([[Sequenced loading]], false)
-vim.cmd [[augroup packer_load_aucmds]]
-vim.cmd [[au!]]
-  -- Filetype lazy-loads
-time([[Defining lazy-load filetype autocommands]], true)
-vim.cmd [[au FileType latex ++once lua require("packer.load")({'autolist.nvim'}, { ft = "latex" }, _G.packer_plugins)]]
-vim.cmd [[au FileType markdown ++once lua require("packer.load")({'autolist.nvim'}, { ft = "markdown" }, _G.packer_plugins)]]
-vim.cmd [[au FileType text ++once lua require("packer.load")({'autolist.nvim'}, { ft = "text" }, _G.packer_plugins)]]
-time([[Defining lazy-load filetype autocommands]], false)
-vim.cmd("augroup END")
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then
