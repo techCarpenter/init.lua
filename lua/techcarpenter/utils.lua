@@ -1,6 +1,8 @@
 local lftmDir = 'C:/GitRepos/lftm/'
 
 ---Insert single line string at cursor location
+---
+---Note: str cannot be more than 1 line
 ---@param str string
 local function insertAtCursor(str)
   local pos = vim.api.nvim_win_get_cursor(0)[2]
@@ -10,7 +12,7 @@ local function insertAtCursor(str)
   vim.api.nvim_feedkeys(str:len() .. 'l', 'n', true)
 end
 
----Append lines or list of lines to beginning of currently selected buffer 
+---Append lines or list of lines to beginning of currently selected buffer
 ---@param strList string|string[]
 local function appendBufferStart(strList)
   local line = vim.fn.line(0)
@@ -76,22 +78,40 @@ local function openDailyNote()
   vim.api.nvim_feedkeys('Go', 'n', true)
 end
 
-local function openJournalNote()
+local function createJournalNote()
   local notesDir = lftmDir .. 'personal/notes/'
   local fileDate = os.date('%Y%m%d%H%M%S')
-  local title = vim.fn.input({ prompt = 'File name: ', cancelreturn = '' })
-  title = slugify(title)
+  local ogTitle = vim.fn.input({ prompt = 'File name: ', cancelreturn = '' })
+  local title = slugify(ogTitle)
 
-  if title == '' then return end
+  if title == '' then
+    print('Invalid title')
+    return
+  end
 
-  local fileName = fileDate .. title .. '.md'
+  local fileName = fileDate .. '-' .. title .. '.md'
   vim.cmd(':enew')
+  local template = {
+    '---',
+    'tags:',
+    '  - notes',
+    '---',
+    '',
+    '# ' .. ogTitle
+  }
+
+  appendBufferStart(template)
+
   vim.cmd(':file ' .. notesDir .. fileName)
+  vim.cmd(':w')
+  vim.cmd(':setlocal filetype=markdown')
+  vim.api.nvim_feedkeys('Go', 'n', true)
 end
 
-Utils = {
+local Utils = {
   openDailyNote = openDailyNote,
   insertDate = insertDate,
-  openJournalNote = openJournalNote,
+  createJournalNote = createJournalNote,
 }
+
 return Utils
