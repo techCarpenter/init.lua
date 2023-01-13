@@ -46,7 +46,9 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
 vim.keymap.set('i', '<C-H>', '<ESC>lcb>') --<C-H> maps to backspace in the terminal
 
+-- LFTM shortcuts
 vim.keymap.set('n', '<leader>kd', utils.insertDate, { desc = 'Insert Date' })
 vim.keymap.set('n', '<leader>kn', utils.openDailyNote, { desc = 'Create daily note' })
 vim.keymap.set('n', '<leader>kj', utils.createJournalNote, { desc = 'Create journal note' })
+vim.keymap.set('n', '<leader>ks', utils.openStandupNote, { desc = 'Create standup note' })
 

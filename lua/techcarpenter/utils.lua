@@ -81,15 +81,15 @@ end
 local function createJournalNote()
   local notesDir = lftmDir .. 'personal/notes/'
   local fileDate = os.date('%Y%m%d%H%M%S')
-  local ogTitle = vim.fn.input({ prompt = 'File name: ', cancelreturn = '' })
-  local title = slugify(ogTitle)
+  local title = vim.fn.input({ prompt = 'File title: ', cancelreturn = '' })
+  local titleSlug = slugify(title)
 
-  if title == '' then
+  if titleSlug == '' then
     print('Invalid title')
     return
   end
 
-  local fileName = fileDate .. '-' .. title .. '.md'
+  local fileName = fileDate .. '-' .. titleSlug .. '.md'
   vim.cmd(':enew')
   local template = {
     '---',
@@ -97,7 +97,7 @@ local function createJournalNote()
     '  - notes',
     '---',
     '',
-    '# ' .. ogTitle
+    '# ' .. title
   }
 
   appendBufferStart(template)
@@ -108,10 +108,43 @@ local function createJournalNote()
   vim.api.nvim_feedkeys('Go', 'n', true)
 end
 
+local function openStandupNote()
+  local standupDir = lftmDir .. 'work/standups/'
+  local fileDate = os.date('%Y.%m.%d')
+  local fileName = fileDate .. '-standup.md'
+  local filePath = standupDir .. fileName
+
+  -- Check if file exists in file system
+  if vim.fn.globpath(standupDir, fileName) ~= '' then
+    vim.cmd(':edit ' .. filePath)
+    vim.api.nvim_feedkeys('G', 'n', true)
+    return
+  end
+
+  -- Create file
+  vim.cmd(':enew')
+  local template = {
+    '---',
+    'tags:',
+    '  - standup',
+    '---',
+    '',
+    '# Standup - ' .. os.date('%m.%d.%Y'),
+  }
+
+  appendBufferStart(template)
+
+  vim.cmd(':file ' .. filePath)
+  vim.cmd(':w')
+  vim.cmd(':setlocal filetype=markdown')
+  vim.api.nvim_feedkeys('Go', 'n', true)
+end
+
 local Utils = {
   openDailyNote = openDailyNote,
   insertDate = insertDate,
   createJournalNote = createJournalNote,
+  openStandupNote = openStandupNote
 }
 
 return Utils
