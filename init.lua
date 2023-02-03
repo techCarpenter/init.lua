@@ -58,6 +58,13 @@ require('packer').startup(function(use)
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
   use 'Glench/Vim-Jinja2-Syntax'
+  use {
+    "folke/trouble.nvim",
+    requires = "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("trouble").setup {}
+    end
+  }
   use 'folke/zen-mode.nvim'
   use 'folke/which-key.nvim'
 
